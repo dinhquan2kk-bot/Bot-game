@@ -6,7 +6,7 @@ EMAIL_NHAN = os.environ["EMAIL_NHAN"]
 EMAIL_APP_PASSWORD = os.environ["EMAIL_APP_PASSWORD"]
 
 def send_test_email():
-    msg = MIMEText("Ket sat GitHub va Mat khau ung dung Gmail da hoat dong 100% roi nhe!", _charset="utf-8")
+    msg = MIMEText("Ket sat GitHub va Mat khau ung dung Gmail cua ban da hoat dong 100% roi nhe!", _charset="utf-8")
     msg['Subject'] = 'THU NGHIEM: Bot GitHub gui thu thanh cong!'
     msg['From'] = EMAIL_NHAN
     msg['To'] = EMAIL_NHAN
