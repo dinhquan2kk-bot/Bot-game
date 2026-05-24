@@ -1,39 +1,29 @@
 import os
-import time
 import smtplib
 from email.mime.text import MIMEText
-from playwright.sync_api import sync_playwright
 
+# Lấy cấu hình từ két sắt bảo mật GitHub của bạn
 EMAIL_NHAN = os.environ["EMAIL_NHAN"]
 EMAIL_APP_PASSWORD = os.environ["EMAIL_APP_PASSWORD"]
-GAME_USERNAME = os.environ["GAME_USERNAME"]
-GAME_PASSWORD = os.environ["GAME_PASSWORD"]
 
-def send_to_email(content):
-    msg = MIMEText(content, _charset="utf-8")
-    msg['Subject'] = '🔵 Cap nhat du lieu Mystera Legacy'
+def send_test_email():
+    # Nội dung thư thử nghiệm
+    msg = MIMEText("Két sắt GitHub và Mật khẩu ứng dụng Gmail của bạn đã hoạt động 100% rồi nhé!", _charset="utf-8")
+    msg['Subject'] = '🔔 THỬ NGHIỆM: Bot GitHub gửi thư thành công!'
     msg['From'] = EMAIL_NHAN
     msg['To'] = EMAIL_NHAN
+
     try:
+        # Kết nối đến server thư của Google
         with smtplib.SMTP_SSL('://gmail.com', 465) as server:
             server.login(EMAIL_NHAN, EMAIL_APP_PASSWORD)
             server.sendmail(EMAIL_NHAN, EMAIL_NHAN, msg.as_string())
-        print("Da gui email thanh cong!")
+        print("Gửi email thử nghiệm THÀNH CÔNG!")
     except Exception as e:
-        print("Loi khi gui email:", e)
+        print(f"Gửi email THẤT BẠI. Lỗi chi tiết: {str(e)}")
 
-def get_game_data():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        try:
-            page.goto("https://mysteralegacy.com")
-            page.wait_for_load_state("networkidle")
-            
-            # Tu dong dien tai khoan va mat khau game từ két sắt bảo mật
-            page.fill("#username_input_field", GAME_USERNAME) 
-            page.fill("#password_input_field", GAME_PASSWORD)
-            page.click("#login_button")
+if __name__ == "__main__":
+    send_test_email()
             time.sleep(5)
             
             # Lenh doc du lieu tu man hinh game mang ve
