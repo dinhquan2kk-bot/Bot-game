@@ -1,0 +1,31 @@
+name: Lay Du Lieu Game Mystera
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Kiem tra code
+      uses: actions/checkout@v4
+
+    - name: Cai dat Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Cai dat thu vien chay game ngam
+      run: |
+        pip install playwright requests
+        playwright install chromium
+
+    - name: Chay Script vao game
+      env:
+        EMAIL_NHAN: ${{ secrets.EMAIL_NHAN }}
+        EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+        GAME_USERNAME: ${{ secrets.GAME_USERNAME }}
+        GAME_PASSWORD: ${{ secrets.GAME_PASSWORD }}
+      run: python main.py
